@@ -40,7 +40,6 @@ public class entrada extends JFrame {
 	 * Create the frame.
 	 */
 	public entrada() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 947, 627);
 		contentPane = new JPanel();
 		contentPane.setToolTipText("1- Monster Hunter Wilds\r\n2- EA Sports FC 25\r\n3- Black Myth: Wukong\r\n4- Assassin’s Creed Shadows \r\n5- The Elder Scrolls IV: Oblivion Remastered\r\n6- NBA 2K25\r\n7- Call of Duty: Black Ops 6 \r\n8- Super Mario Party Jamboree \r\n9- Super Mario Bros. Wonder\r\n10- Grand Theft Auto V ");
@@ -65,11 +64,18 @@ public class entrada extends JFrame {
 		contentPane.add(btnNewButton);
 		
 		JButton btnXbox = new JButton("Xbox");
+		btnXbox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Xbox Xboxventana = new Xbox();
+				Xboxventana.setVisible(true);
+			}
+		});
 		btnXbox.setBounds(215, 138, 134, 105);
 		btnXbox.setBackground(Color.LIGHT_GRAY);
 		btnXbox.setForeground(Color.BLACK);
 		btnXbox.setFont(btnXbox.getFont().deriveFont(btnXbox.getFont().getStyle() | Font.BOLD));
 		contentPane.add(btnXbox);
+		
 		
 		JButton btnPc = new JButton("PC");
 		btnPc.setBounds(35, 254, 134, 105);
@@ -77,6 +83,8 @@ public class entrada extends JFrame {
 		btnPc.setFont(btnPc.getFont().deriveFont(btnPc.getFont().getStyle() | Font.BOLD));
 		btnPc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				PC PCventana = new PC();
+				PCventana.setVisible(true);
 			}
 		});
 		contentPane.add(btnPc);
@@ -86,6 +94,8 @@ public class entrada extends JFrame {
 		btnNintendoSwitch.setBackground(Color.LIGHT_GRAY);
 		btnNintendoSwitch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				NintendoSwitch NintendoSwitchventana = new NintendoSwitch();
+				NintendoSwitchventana.setVisible(true);
 			}
 		});
 		btnNintendoSwitch.setFont(btnNintendoSwitch.getFont().deriveFont(btnNintendoSwitch.getFont().getStyle() | Font.BOLD));
@@ -102,6 +112,12 @@ public class entrada extends JFrame {
 		contentPane.add(lblNuevaContrasea_1_1);
 		
 		JButton btnRebajas = new JButton("Rebajas ");
+		btnRebajas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Rebajas Rebajasventana = new Rebajas();
+				Rebajasventana.setVisible(true); 
+			}
+		});
 		btnRebajas.setBounds(129, 370, 134, 105);
 		btnRebajas.setBackground(Color.LIGHT_GRAY);
 		btnRebajas.setFont(btnRebajas.getFont().deriveFont(btnRebajas.getFont().getStyle() | Font.BOLD));
@@ -136,21 +152,49 @@ public class entrada extends JFrame {
 		panel.add(lblNuevaContrasea_1_1_1_3);
 		
 		JLabel lblNuevaContrasea_1_1_1_4 = new JLabel("7- Call of Duty: Black Ops 6 ");
+		lblNuevaContrasea_1_1_1_4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Juego7 a= new Juego7();
+				a.setVisible(true);
+			}
+		});
 		lblNuevaContrasea_1_1_1_4.setBounds(25, 192, 206, 21);
 		lblNuevaContrasea_1_1_1_4.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 15));
 		panel.add(lblNuevaContrasea_1_1_1_4);
 		
 		JLabel lblNuevaContrasea_1_1_1_5 = new JLabel("6- NBA 2K25");
+		lblNuevaContrasea_1_1_1_5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Juego6 a= new Juego6();
+				a.setVisible(true);
+			}
+		});
 		lblNuevaContrasea_1_1_1_5.setBounds(25, 160, 98, 21);
 		lblNuevaContrasea_1_1_1_5.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 15));
 		panel.add(lblNuevaContrasea_1_1_1_5);
 		
 		JLabel lblNuevaContrasea_1_1_1_6 = new JLabel("8- Super Mario Party Jamboree ");
+		lblNuevaContrasea_1_1_1_6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Juego8 a= new Juego8();
+				a.setVisible(true);
+			}
+		});
 		lblNuevaContrasea_1_1_1_6.setBounds(25, 224, 253, 21);
 		lblNuevaContrasea_1_1_1_6.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 15));
 		panel.add(lblNuevaContrasea_1_1_1_6);
 		
 		JLabel lblNuevaContrasea_1_1_1_7 = new JLabel("9- Super Mario Bros. Wonder ");
+		lblNuevaContrasea_1_1_1_7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Juego9 a= new Juego9();
+				a.setVisible(true);
+			}
+		});
 		lblNuevaContrasea_1_1_1_7.setBounds(25, 256, 253, 21);
 		lblNuevaContrasea_1_1_1_7.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 15));
 		panel.add(lblNuevaContrasea_1_1_1_7);
@@ -159,7 +203,7 @@ public class entrada extends JFrame {
 		lblNuevaContrasea_1_1_1_8.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Juego1 a=new Juego1();
+				Juego2 a=new Juego2();
 				a.setVisible(true);
 			}
 		});
@@ -168,21 +212,49 @@ public class entrada extends JFrame {
 		panel.add(lblNuevaContrasea_1_1_1_8);
 		
 		JLabel lblNuevaContrasea_1_1_1_9 = new JLabel("3- Black Myth: Wukong ");
+		lblNuevaContrasea_1_1_1_9.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Juego3 a= new Juego3();
+				a.setVisible(true);
+			}
+		});
 		lblNuevaContrasea_1_1_1_9.setBounds(25, 69, 170, 21);
 		lblNuevaContrasea_1_1_1_9.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 15));
 		panel.add(lblNuevaContrasea_1_1_1_9);
 		
 		JLabel lblNuevaContrasea_1_1_1_10 = new JLabel("4- Assassin’s Creed Shadows ");
+		lblNuevaContrasea_1_1_1_10.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Juego4 a= new Juego4();
+				a.setVisible(true);
+			}
+		});
 		lblNuevaContrasea_1_1_1_10.setBounds(25, 103, 200, 21);
 		lblNuevaContrasea_1_1_1_10.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 15));
 		panel.add(lblNuevaContrasea_1_1_1_10);
 		
 		JLabel lblNuevaContrasea_1_1_1_2 = new JLabel("10- Grand Theft Auto V");
+		lblNuevaContrasea_1_1_1_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Juego10 a= new Juego10();
+				a.setVisible(true);
+			}
+		});
 		lblNuevaContrasea_1_1_1_2.setBounds(25, 288, 263, 21);
 		lblNuevaContrasea_1_1_1_2.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 15));
 		panel.add(lblNuevaContrasea_1_1_1_2);
 		
 		JLabel lblNuevaContrasea_1_1_1_1 = new JLabel("5- The Elder Scrolls IV: Oblivion Remastered ");
+		lblNuevaContrasea_1_1_1_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Juego5 a= new Juego5();
+				a.setVisible(true);
+			}
+		});
 		lblNuevaContrasea_1_1_1_1.setBounds(25, 134, 309, 21);
 		lblNuevaContrasea_1_1_1_1.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 15));
 		panel.add(lblNuevaContrasea_1_1_1_1);
