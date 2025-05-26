@@ -11,7 +11,6 @@ import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.SwingConstants;
-import javax.swing.JButton;
 
 public class Juego1 extends JFrame {
 
@@ -137,16 +136,12 @@ public class Juego1 extends JFrame {
 		contentPane.add(lblNewLabel_3_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("");
-		lblNewLabel_4.setBounds(37, 103, 333, 254);
+		lblNewLabel_4.setBounds(37, 103, 323, 266);
 		ImageIcon icono2=new ImageIcon(PlayStation.class.getResource("/imagenes/MonsterHunter.jpg"));
 		Image imagen2 = icono2.getImage().getScaledInstance(lblNewLabel_4.getWidth(), lblNewLabel_4.getHeight(), Image.SCALE_SMOOTH); 
 		ImageIcon iconoAjustado2 = new ImageIcon(imagen2);
 		lblNewLabel_4.setIcon(iconoAjustado2);
 		contentPane.add(lblNewLabel_4);
-		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(60, 608, 182, 52);
-		contentPane.add(btnNewButton);
 	
 	}
 }

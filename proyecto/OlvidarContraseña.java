@@ -7,21 +7,32 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.Cursor;
+
+import javax.swing.JPasswordField;
+import java.awt.Toolkit;
 
 public class OlvidarContraseña extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField userField;
+	private JTextField emailField;
+	private JPasswordField pinField;
 
 	/**
 	 * Launch the application.
@@ -43,71 +54,147 @@ public class OlvidarContraseña extends JFrame {
 	 * Create the frame.
 	 */
 	public OlvidarContraseña() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Alfonso\\Downloads\\ChatGPT Image 21 may 2025, 09_47_302.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 820, 532);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnNewButton = new JButton("Iniciar ");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton.setBounds(181, 209, 89, 23);
-		contentPane.add(btnNewButton);
+		JButton recuperarButton = new JButton("Recuperar");
+		recuperarButton.setFont(new Font("Verdana", Font.BOLD, 15));
+		recuperarButton.setForeground(new Color(255, 255, 255));
+		recuperarButton.setBackground(new Color(128, 128, 128));
+		recuperarButton.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                recuperarButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia a "mano"
+            }
+
+            public void mouseExited(MouseEvent e) {
+                recuperarButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // Vuelve al normal
+            }
+        });
+		recuperarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                recuperarCredenciales();
+            }
+        });
+
 		
-		textField = new JTextField();
-		textField.setBounds(237, 73, 86, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		pinField = new JPasswordField();
+		pinField.setForeground(new Color(255, 255, 255));
+		pinField.setFont(new Font("Verdana", Font.BOLD, 15));
+		pinField.setBackground(new Color(128, 128, 128));
+		pinField.setBounds(493, 313, 71, 32);
+		contentPane.add(pinField);
+		pinField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (!Character.isDigit(c)) { // Bloquear entrada si no es número
+                    e.consume();
+                }
+
+                if (pinField.getPassword().length >= 4) { // Limitar a 4 caracteres
+                    e.consume();
+                }
+            }
+        });
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(237, 104, 86, 20);
-		contentPane.add(textField_1);
+		JButton salirButton = new JButton("Salir");
+		salirButton.setForeground(Color.WHITE);
+		salirButton.setFont(new Font("Verdana", Font.BOLD, 15));
+		salirButton.setBackground(Color.GRAY);
+		salirButton.setBounds(459, 385, 136, 32);
+		contentPane.add(salirButton);
+		recuperarButton.setBounds(270, 385, 136, 32);
+		contentPane.add(recuperarButton);
+		salirButton.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                salirButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia a "mano"
+            }
+
+            public void mouseExited(MouseEvent e) {
+                salirButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // Vuelve al normal
+            }
+        });
+		salirButton.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		    	proyectito nuevoFrame = new proyectito(); // Instancia la nueva ventana
+	            nuevoFrame.setVisible(true); // La muestra en pantalla
+	            dispose(); // Cierra el JFrame actual
+		    }});
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(237, 135, 86, 20);
-		contentPane.add(textField_2);
+		userField = new JTextField();
+		userField.setForeground(new Color(255, 255, 255));
+		userField.setBackground(new Color(128, 128, 128));
+		userField.setFont(new Font("Verdana", Font.BOLD, 15));
+		userField.setColumns(10);
+		userField.setBounds(368, 159, 196, 32);
+		contentPane.add(userField);
 		
-		JLabel lblPin = new JLabel("Pin :");
-		lblPin.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblPin.setBounds(181, 75, 46, 14);
+		emailField = new JTextField();
+		emailField.setFont(new Font("Verdana", Font.BOLD, 15));
+		emailField.setForeground(new Color(255, 255, 255));
+		emailField.setBackground(new Color(128, 128, 128));
+		emailField.setColumns(10);
+		emailField.setBounds(368, 237, 196, 32);
+		contentPane.add(emailField);
+		
+		JLabel lblPin = new JLabel("Pin:");
+		lblPin.setForeground(new Color(255, 255, 255));
+		lblPin.setBackground(new Color(255, 255, 255));
+		lblPin.setFont(new Font("Verdana", Font.BOLD, 15));
+		lblPin.setBounds(426, 322, 46, 14);
 		contentPane.add(lblPin);
 		
-		JLabel lblNewLabel_1 = new JLabel("Usuario :");
-		lblNewLabel_1.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblNewLabel_1.setBounds(168, 106, 46, 14);
-		contentPane.add(lblNewLabel_1);
+		JLabel userLabel = new JLabel("Usuario:");
+		userLabel.setForeground(new Color(255, 255, 255));
+		userLabel.setFont(new Font("Verdana", Font.BOLD, 15));
+		userLabel.setBounds(270, 168, 82, 14);
+		contentPane.add(userLabel);
 		
-		JLabel lblCorreoElectroncio = new JLabel("Correo Electronico:");
-		lblCorreoElectroncio.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblCorreoElectroncio.setBounds(112, 137, 115, 14);
-		contentPane.add(lblCorreoElectroncio);
+		JLabel emailLabel = new JLabel("Email:");
+		emailLabel.setForeground(new Color(255, 255, 255));
+		emailLabel.setFont(new Font("Verdana", Font.BOLD, 15));
+		emailLabel.setBounds(287, 245, 54, 14);
+		contentPane.add(emailLabel);
 		
-		JLabel lblNewLabel_6_1_1_1 = new JLabel("Pregunta de Recuperacion :");
-		lblNewLabel_6_1_1_1.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblNewLabel_6_1_1_1.setBounds(10, 174, 150, 14);
-		contentPane.add(lblNewLabel_6_1_1_1);
+		JLabel tituloLabel = new JLabel("Recuperar Contraseña");
+		tituloLabel.setForeground(new Color(255, 255, 255));
+		tituloLabel.setFont(new Font("Verdana", Font.BOLD, 20));
+		tituloLabel.setBounds(286, 34, 258, 44);
+		contentPane.add(tituloLabel);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"¿Cual es tu color Favorito ?", "¿Nombre de tu primera mascota ? ", "¿Nombre de tu Madre ? ", "¿Nombre de cantante favorito ?"}));
-		comboBox_1.setBounds(158, 174, 169, 17);
-		contentPane.add(comboBox_1);
-		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(338, 172, 86, 20);
-		contentPane.add(textField_3);
-		
-		JLabel lblRecuperarConstrasea = new JLabel("Recuperar Contraseña");
-		lblRecuperarConstrasea.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 30));
-		lblRecuperarConstrasea.setBounds(72, 11, 399, 44);
-		contentPane.add(lblRecuperarConstrasea);
+		JLabel pinLabel = new JLabel("");
+		pinLabel.setFont(new Font("Verdana", Font.BOLD, 12));
+		pinLabel.setIcon(new ImageIcon("C:\\Users\\Alfonso\\Downloads\\fondo.png"));
+		pinLabel.setBounds(0, 0, 806, 495);
+		contentPane.add(pinLabel);
 	}
+	
+	private void recuperarCredenciales() {
+        String usuario = userField.getText();
+        String email = emailField.getText();
+        String pin = pinField.getText();
+        
+        if (!email.contains("@") || !email.contains(".")) {
+	        JOptionPane.showMessageDialog(null, "❌ El correo electrónico no cumple con el formato", "Error", JOptionPane.WARNING_MESSAGE);
+	        email = null;
+	        
+	    }
+
+        if (usuario.isEmpty() || email.isEmpty() || pin.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "⚠️ Todos los campos son obligatorios.");
+            return;
+        }
+
+        String resultado = RecuperarContraseñaDAO.recuperarCredenciales(usuario, email, pin);
+        JOptionPane.showMessageDialog(null, resultado);
+    }
 
 }

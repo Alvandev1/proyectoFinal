@@ -8,28 +8,38 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JRadioButton;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextPane;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Panel;
 import javax.swing.JSeparator;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.Cursor;
+
+import javax.swing.JPasswordField;
+import java.awt.Toolkit;
 
 public class registrojuego extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
+	private JTextField userField;
+	private JTextField nombreField;
+	private JTextField apellidoField;
+	private JTextField emailField;
+	private JPasswordField passwordField;
+	private JPasswordField pinField;
 
 	/**
 	 * Launch the application.
@@ -51,137 +61,239 @@ public class registrojuego extends JFrame {
 	 * Create the frame.
 	 */
 	public registrojuego() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Alfonso\\Downloads\\ChatGPT Image 21 may 2025, 09_47_302.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 571, 491);
+		setBounds(100, 100, 820, 532);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Masculino");
-		rdbtnNewRadioButton.setBounds(313, 312, 96, 23);
-		contentPane.add(rdbtnNewRadioButton);
+		JLabel pinLabel = new JLabel("Pin:");
+		pinLabel.setForeground(Color.WHITE);
+		pinLabel.setFont(new Font("Verdana", Font.BOLD, 15));
+		pinLabel.setBounds(398, 315, 34, 14);
+		contentPane.add(pinLabel);
 		
-		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Femenino");
-		rdbtnNewRadioButton_1.setBounds(411, 312, 96, 23);
-		contentPane.add(rdbtnNewRadioButton_1);
+		pinField = new JPasswordField(4);
+		pinField.setFont(new Font("Verdana", Font.BOLD, 15));
+		pinField.setForeground(new Color(255, 255, 255));
+		pinField.setBackground(new Color(128, 128, 128));
+		pinField.setBounds(452, 307, 122, 32);
+		contentPane.add(pinField);
+		pinField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (!Character.isDigit(c)) { // Bloquear entrada si no es número
+                    e.consume();
+                }
+
+                if (pinField.getPassword().length >= 4) { // Limitar a 4 caracteres
+                    e.consume();
+                }
+            }
+        });
 		
-		textField = new JTextField();
-		textField.setBounds(313, 66, 86, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(313, 97, 86, 20);
-		contentPane.add(textField_1);
+		JButton iniciasesionButton = new JButton("Inicia sesión si tienes cuenta");
+		iniciasesionButton.setOpaque(false);
+		iniciasesionButton.setForeground(Color.WHITE);
+		iniciasesionButton.setFont(new Font("Verdana", Font.BOLD, 15));
+		iniciasesionButton.setContentAreaFilled(false);
+		iniciasesionButton.setBorderPainted(false);
+		iniciasesionButton.setBackground(Color.BLACK);
+		iniciasesionButton.setBounds(285, 453, 295, 21);
+		contentPane.add(iniciasesionButton);
+		iniciasesionButton.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                iniciasesionButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia a "mano"
+            }
+
+            public void mouseExited(MouseEvent e) {
+                iniciasesionButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // Vuelve al normal
+            }
+        });
+		iniciasesionButton.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		    	proyectito nuevoFrame = new proyectito(); // Instancia la nueva ventana
+	            nuevoFrame.setVisible(true); // La muestra en pantalla
+	            dispose(); // Cierra el JFrame actual
+		    }});
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(313, 128, 86, 20);
-		contentPane.add(textField_2);
+		passwordField = new JPasswordField();
+		passwordField.setFont(new Font("Verdana", Font.BOLD, 15));
+		passwordField.setForeground(new Color(255, 255, 255));
+		passwordField.setBackground(new Color(128, 128, 128));
+		passwordField.setBounds(328, 204, 246, 32);
+		contentPane.add(passwordField);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(313, 159, 86, 20);
-		contentPane.add(textField_3);
+
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(313, 190, 86, 20);
-		contentPane.add(textField_4);
 		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(313, 221, 86, 20);
-		contentPane.add(textField_5);
+		JComboBox generoBox = new JComboBox();
+		generoBox.setForeground(new Color(255, 255, 255));
+		generoBox.setBackground(new Color(128, 128, 128));
+		generoBox.setModel(new DefaultComboBoxModel(new String[] {"Hombre", "Mujer"}));
+		generoBox.setFont(new Font("Verdana", Font.BOLD, 15));
+		generoBox.setBounds(263, 359, 173, 35);
+		contentPane.add(generoBox);
 		
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(313, 252, 86, 20);
-		contentPane.add(textField_6);
 		
-		JLabel lblNewLabel = new JLabel("Usuario :");
-		lblNewLabel.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblNewLabel.setBounds(243, 69, 46, 14);
-		contentPane.add(lblNewLabel);
+		userField = new JTextField();
+		userField.setFont(new Font("Verdana", Font.BOLD, 15));
+		userField.setForeground(new Color(255, 255, 255));
+		userField.setBackground(new Color(128, 128, 128));
+		userField.setBounds(328, 54, 245, 32);
+		contentPane.add(userField);
+		userField.setColumns(10);
 		
-		JLabel lblNombre = new JLabel("Nombre :");
-		lblNombre.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblNombre.setBounds(243, 100, 60, 14);
-		contentPane.add(lblNombre);
+		nombreField = new JTextField();
+		nombreField.setFont(new Font("Verdana", Font.BOLD, 15));
+		nombreField.setForeground(new Color(255, 255, 255));
+		nombreField.setBackground(new Color(128, 128, 128));
+		nombreField.setColumns(10);
+		nombreField.setBounds(327, 104, 245, 32);
+		contentPane.add(nombreField);
 		
-		JLabel lblApellido = new JLabel("Apellido :");
-		lblApellido.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblApellido.setBounds(243, 131, 60, 14);
-		contentPane.add(lblApellido);
+		apellidoField = new JTextField();
+		apellidoField.setFont(new Font("Verdana", Font.BOLD, 15));
+		apellidoField.setForeground(new Color(255, 255, 255));
+		apellidoField.setBackground(new Color(128, 128, 128));
+		apellidoField.setColumns(10);
+		apellidoField.setBounds(328, 152, 246, 32);
+		contentPane.add(apellidoField);
 		
-		JLabel lblPin = new JLabel("Pin :");
-		lblPin.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblPin.setBounds(243, 162, 46, 14);
-		contentPane.add(lblPin);
+		emailField = new JTextField();
+		emailField.setFont(new Font("Verdana", Font.BOLD, 15));
+		emailField.setForeground(new Color(255, 255, 255));
+		emailField.setBackground(new Color(128, 128, 128));
+		emailField.setColumns(10);
+		emailField.setBounds(328, 255, 245, 32);
+		contentPane.add(emailField);
 		
-		JLabel lblCorreoElectronico = new JLabel("Correo electronico:");
-		lblCorreoElectronico.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblCorreoElectronico.setBounds(190, 193, 113, 14);
-		contentPane.add(lblCorreoElectronico);
+		JLabel userLabel = new JLabel("Usuario:");
+		userLabel.setForeground(new Color(255, 255, 255));
+		userLabel.setFont(new Font("Verdana", Font.BOLD, 15));
+		userLabel.setBounds(217, 62, 86, 14);
+		contentPane.add(userLabel);
 		
-		JLabel lblNewLabel_5 = new JLabel("Telefono :");
-		lblNewLabel_5.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblNewLabel_5.setBounds(229, 224, 60, 14);
-		contentPane.add(lblNewLabel_5);
+		JLabel nombreLabel = new JLabel("Nombre:");
+		nombreLabel.setForeground(new Color(255, 255, 255));
+		nombreLabel.setFont(new Font("Verdana", Font.BOLD, 15));
+		nombreLabel.setBounds(217, 112, 74, 14);
+		contentPane.add(nombreLabel);
 		
-		JLabel lblNewLabel_6 = new JLabel("Direccion :");
-		lblNewLabel_6.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblNewLabel_6.setBounds(229, 255, 60, 14);
-		contentPane.add(lblNewLabel_6);
+		JLabel apellidoLabel = new JLabel("Apellidos:");
+		apellidoLabel.setForeground(new Color(255, 255, 255));
+		apellidoLabel.setFont(new Font("Verdana", Font.BOLD, 15));
+		apellidoLabel.setBounds(205, 160, 86, 14);
+		contentPane.add(apellidoLabel);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Andalucía ", "Aragón ", "Canarias ", "Cantabria ", "Castilla La Mancha ", "Castilla y León ", "Cataluña ", "Comunidad de Madrid "}));
-		comboBox.setBounds(315, 283, 124, 22);
-		contentPane.add(comboBox);
+		JLabel contraLabel = new JLabel("Contraseña:");
+		contraLabel.setForeground(new Color(255, 255, 255));
+		contraLabel.setFont(new Font("Verdana", Font.BOLD, 15));
+		contraLabel.setBounds(186, 212, 105, 14);
+		contentPane.add(contraLabel);
 		
-		JLabel lblNewLabel_6_1 = new JLabel("Provincia :");
-		lblNewLabel_6_1.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblNewLabel_6_1.setBounds(229, 286, 60, 14);
-		contentPane.add(lblNewLabel_6_1);
+		JLabel emailLabel = new JLabel("Email:");
+		emailLabel.setForeground(new Color(255, 255, 255));
+		emailLabel.setFont(new Font("Verdana", Font.BOLD, 15));
+		emailLabel.setBounds(237, 263, 55, 14);
+		contentPane.add(emailLabel);
 		
-		JLabel lblNewLabel_6_1_1 = new JLabel("Genero :");
-		lblNewLabel_6_1_1.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblNewLabel_6_1_1.setBounds(229, 316, 60, 14);
-		contentPane.add(lblNewLabel_6_1_1);
+		JComboBox paisBox = new JComboBox();
+		paisBox.setForeground(new Color(255, 255, 255));
+		paisBox.setBackground(new Color(128, 128, 128));
+		paisBox.setToolTipText("");
+		paisBox.setFont(new Font("Verdana", Font.BOLD, 15));
+		paisBox.setModel(new DefaultComboBoxModel(new String[] {"Afganistán", "Albania", "Alemania", "Andorra", "Angola", "Antigua y Barbuda", "Arabia Saudita", "Argelia", "Argentina", "Armenia", "Australia", "Austria", "Azerbaiyán", "Bahamas", "Bangladés", "Barbados", "Baréin", "Bélgica", "Belice", "Benín", "Bielorrusia", "Birmania", "Bolivia", "Bosnia y Herzegovina", "Botsuana", "Brasil", "Brunéi", "Bulgaria", "Burkina Faso", "Burundi", "Bután", "Cabo Verde", "Camboya", "Camerún", "Canadá", "Catar", "Chad", "Chile", "China", "Chipre", "Ciudad del Vaticano", "Colombia", "Comoras", "Corea del Norte", "Corea del Sur", "Costa de Marfil", "Costa Rica", "Croacia", "Cuba", "Dinamarca", "Dominica", "Ecuador", "Egipto", "El Salvador", "Emiratos Árabes Unidos", "Eritrea", "Eslovaquia", "Eslovenia", "España", "Estados Unidos", "Estonia", "Etiopía", "Filipinas", "Finlandia", "Fiyi", "Francia", "Gabón", "Gambia", "Georgia", "Ghana", "Granada", "Grecia", "Guatemala", "Guinea", "Guinea-Bisáu", "Guinea Ecuatorial", "Guyana", "Haití", "Honduras", "Hungría", "India", "Indonesia", "Irak", "Irán", "Irlanda", "Islandia", "Islas Marshall", "Islas Salomón", "Israel", "Italia", "Jamaica", "Japón", "Jordania", "Kazajistán", "Kenia", "Kirguistán", "Kiribati", "Kuwait", "Laos", "Lesoto", "Letonia", "Líbano", "Liberia", "Libia", "Liechtenstein", "Lituania", "Luxemburgo", "Macedonia del Norte", "Madagascar", "Malasia", "Malaui", "Maldivas", "Malí", "Malta", "Marruecos", "Mauricio", "Mauritania", "México", "Micronesia", "Moldavia", "Mónaco", "Mongolia", "Montenegro", "Mozambique", "Namibia", "Nauru", "Nepal", "Nicaragua", "Níger", "Nigeria", "Noruega", "Nueva Zelanda", "Omán", "Países Bajos", "Pakistán", "Palaos", "Palestina (como Estado Observador Permanente)", "Panamá", "Papúa Nueva Guinea", "Paraguay", "Perú", "Polonia", "Portugal", "Reino Unido", "República Centroafricana", "República Checa", "República del Congo", "República Democrática del Congo", "República Dominicana", "Ruanda", "Rumanía", "Rusia", "Samoa", "San Cristóbal y Nieves", "San Marino", "San Vicente y las Granadinas", "Santa Lucía", "Santo Tomé y Príncipe", "Senegal", "Serbia", "Seychelles", "Sierra Leona", "Singapur", "Siria", "Somalia", "Sri Lanka", "Suazilandia", "Sudáfrica", "Sudán", "Sudán del Sur", "Suecia", "Suiza", "Surinam", "Tailandia", "Tanzania", "Tayikistán", "Timor Oriental", "Togo", "Tonga", "Trinidad y Tobago", "Túnez", "Turkmenistán", "Turquía", "Tuvalu", "Ucrania", "Uganda", "Uruguay", "Uzbekistán", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Yibuti", "Zambia", "Zimbabue"}));
+		paisBox.setBounds(525, 359, 173, 35);
+		contentPane.add(paisBox);
 		
-		JButton btnNewButton = new JButton("Registrarse ");
-		btnNewButton.setBounds(229, 399, 114, 23);
-		contentPane.add(btnNewButton);
+		JLabel paisLabel = new JLabel("País:");
+		paisLabel.setForeground(new Color(255, 255, 255));
+		paisLabel.setFont(new Font("Verdana", Font.BOLD, 15));
+		paisLabel.setBounds(473, 369, 42, 14);
+		contentPane.add(paisLabel);
 		
-		JButton btnLimpiar = new JButton("Limpiar ");
-		btnLimpiar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnLimpiar.setBounds(359, 399, 106, 23);
-		contentPane.add(btnLimpiar);
+		JLabel generoLabel = new JLabel("Género:");
+		generoLabel.setForeground(new Color(255, 255, 255));
+		generoLabel.setFont(new Font("Verdana", Font.BOLD, 15));
+		generoLabel.setBounds(186, 369, 68, 14);
+		contentPane.add(generoLabel);
 		
-		JLabel lblRegistroDeUsuario = new JLabel("Registro de Usuario");
-		lblRegistroDeUsuario.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 30));
-		lblRegistroDeUsuario.setBounds(108, 11, 399, 44);
-		contentPane.add(lblRegistroDeUsuario);
+		JButton registrarButton = new JButton("Registrarse ");
+		registrarButton.setBackground(new Color(128, 128, 128));
+		registrarButton.setFont(new Font("Verdana", Font.BOLD, 15));
+		registrarButton.setBounds(353, 409, 144, 34);
+		contentPane.add(registrarButton);
+		registrarButton.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                registrarButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia a "mano"
+            }
+
+            public void mouseExited(MouseEvent e) {
+                registrarButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // Vuelve al normal
+            }
+        });
+		registrarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+                registrarUsuario(generoBox, paisBox);
+            }
+        });
+
+
 		
-		JLabel lblNewLabel_6_1_1_1 = new JLabel("Pregunta de Recuperacion :");
-		lblNewLabel_6_1_1_1.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lblNewLabel_6_1_1_1.setBounds(81, 355, 150, 14);
-		contentPane.add(lblNewLabel_6_1_1_1);
+		JLabel TituloLabel = new JLabel("Registro de Usuario");
+		TituloLabel.setForeground(new Color(255, 255, 255));
+		TituloLabel.setBackground(new Color(255, 255, 255));
+		TituloLabel.setFont(new Font("Verdana", Font.BOLD, 20));
+		TituloLabel.setBounds(307, 0, 240, 44);
+		contentPane.add(TituloLabel);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"¿Cual es tu color Favorito ?", "¿Nombre de tu primera mascota ? ", "¿Nombre de tu Madre ? ", "¿Nombre de cantante favorito ?"}));
-		comboBox_1.setBounds(243, 352, 156, 22);
-		contentPane.add(comboBox_1);
-		
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		textField_7.setBounds(421, 353, 86, 20);
-		contentPane.add(textField_7);
+		JLabel fondoLabel = new JLabel("");
+		fondoLabel.setIcon(new ImageIcon(registrojuego.class.getResource("/imagenes/fondo.png")));
+		fondoLabel.setBounds(0, 0, 806, 495);
+		contentPane.add(fondoLabel);
 	}
-}
+	
+	private void registrarUsuario(JComboBox generoBox, JComboBox paisBox) {
+	    String usuario = userField.getText();
+	    String apellido = apellidoField.getText();
+	    String contraseña = new String(passwordField.getPassword()); // Capturar la contraseña
+	    String email = emailField.getText();
+	    String pais = (String) paisBox.getSelectedItem();
+	    String genero = (String) generoBox.getSelectedItem();
+	    String nombre = nombreField.getText();
+	    String pin = pinField.getText();
+
+	    
+
+	    if (usuario.isEmpty() || apellido.isEmpty() || contraseña.isEmpty() || email.isEmpty() || nombre.isEmpty()) {
+	        JOptionPane.showMessageDialog(null, "⚠️ Todos los campos obligatorios deben estar llenos.");
+	        return;
+	    }
+
+	    // Crear instancia de DAO y registrar usuario
+	    if (!email.contains("@") || !email.contains(".")) {
+	        JOptionPane.showMessageDialog(null, "❌ El correo electrónico no cumple con el formato", "Error", JOptionPane.WARNING_MESSAGE);
+	        email = null;
+	        
+	    }
+	    RegistroUsuarioDAO registroDAO = new RegistroUsuarioDAO();
+	    if (registroDAO.registrarUsuario(usuario, apellido, contraseña, email, pais, genero, nombre, pin) ) {
+	        JOptionPane.showMessageDialog(null, "✅ Usuario registrado exitosamente.");
+	        proyectito nuevoFrame = new proyectito(); // Instancssssssssia la nueva ventana
+            nuevoFrame.setVisible(true); // La muestra en pantalla
+	        dispose(); // Cierra la ventana de registro
+	        
+	    } else {
+	        JOptionPane.showMessageDialog(null, "❌ Error al registrar usuario.");
+	    }
+	}        
+    }

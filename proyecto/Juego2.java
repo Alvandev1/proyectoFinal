@@ -11,7 +11,6 @@ import java.awt.Image;
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 
 public class Juego2 extends JFrame {
 
@@ -115,10 +114,6 @@ public class Juego2 extends JFrame {
 		lblNewLabel_3_2.setBackground(new Color(51, 255, 51));
 		lblNewLabel_3_2.setBounds(454, 361, 69, 60);
 		contentPane.add(lblNewLabel_3_2);
-		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(551, 322, 138, 60);
-		contentPane.add(btnNewButton);
 	}
 
 }

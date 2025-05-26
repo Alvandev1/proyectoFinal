@@ -4,6 +4,7 @@
 /**
  * 
  */
-module Proyecto3 {
+module Proyecto {
 	requires java.desktop;
+	requires java.sql;
 }
