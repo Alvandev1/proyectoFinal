@@ -178,23 +178,27 @@ public class OlvidarContraseña extends JFrame {
 	}
 	
 	private void recuperarCredenciales() {
-        String usuario = userField.getText();
-        String email = emailField.getText();
-        String pin = pinField.getText();
-        
-        if (!email.contains("@") || !email.contains(".")) {
+	    // Obtiene los valores ingresados por el usuario en los campos de texto.
+	    String usuario = userField.getText(); 
+	    String email = emailField.getText();
+	    String pin = pinField.getText();
+	    
+	    // Verifica si el correo electrónico tiene un formato válido (debe contener "@" y ".").
+	    if (!email.contains("@") || !email.contains(".")) { 
 	        JOptionPane.showMessageDialog(null, "❌ El correo electrónico no cumple con el formato", "Error", JOptionPane.WARNING_MESSAGE);
-	        email = null;
-	        
+	        email = null; // Invalida el email si el formato es incorrecto.
 	    }
 
-        if (usuario.isEmpty() || email.isEmpty() || pin.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "⚠️ Todos los campos son obligatorios.");
-            return;
-        }
+	    // Verifica que ninguno de los campos esté vacío. Si lo están, muestra una advertencia.
+	    if (usuario.isEmpty() || email.isEmpty() || pin.isEmpty()) { 
+	        JOptionPane.showMessageDialog(null, "⚠️ Todos los campos son obligatorios.");
+	        return; // Detiene la ejecución de la función si algún campo está vacío.
+	    }
 
-        String resultado = RecuperarContraseñaDAO.recuperarCredenciales(usuario, email, pin);
-        JOptionPane.showMessageDialog(null, resultado);
-    }
+	    // Llama al método 'recuperarCredenciales' de la clase 'RecuperarContraseñaDAO' 
+	    // para verificar los datos en la base de datos y obtener un resultado.
+	    String resultado = RecuperarContraseñaDAO.recuperarCredenciales(usuario, email, pin); 
 
-}
+	    // Muestra el resultado obtenido en un mensaje emergente (puede ser éxito o error).
+	    JOptionPane.showMessageDialog(null, resultado); 
+	}}

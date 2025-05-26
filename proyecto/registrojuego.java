@@ -12,6 +12,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextPane;
 import javax.swing.JTextField;
@@ -61,6 +64,7 @@ public class registrojuego extends JFrame {
 	 * Create the frame.
 	 */
 	public registrojuego() {
+		setTitle("LionGame");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Alfonso\\Downloads\\ChatGPT Image 21 may 2025, 09_47_302.png"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 820, 532);
@@ -263,37 +267,75 @@ public class registrojuego extends JFrame {
 	}
 	
 	private void registrarUsuario(JComboBox generoBox, JComboBox paisBox) {
-	    String usuario = userField.getText();
+	    // Obtiene los valores ingresados por el usuario en los campos de texto.
+	    String usuario = userField.getText(); 
 	    String apellido = apellidoField.getText();
-	    String contraseña = new String(passwordField.getPassword()); // Capturar la contraseña
+	    String contraseña = new String(passwordField.getPassword()); // Captura la contraseña del campo 'passwordField'.
 	    String email = emailField.getText();
-	    String pais = (String) paisBox.getSelectedItem();
-	    String genero = (String) generoBox.getSelectedItem();
+	    String pais = (String) paisBox.getSelectedItem(); // Obtiene el país seleccionado en el JComboBox.
+	    String genero = (String) generoBox.getSelectedItem(); // Obtiene el género seleccionado en el JComboBox.
 	    String nombre = nombreField.getText();
 	    String pin = pinField.getText();
 
-	    
-
-	    if (usuario.isEmpty() || apellido.isEmpty() || contraseña.isEmpty() || email.isEmpty() || nombre.isEmpty()) {
+	    // Validación: Verifica que los campos obligatorios no estén vacíos.
+	    if (usuario.isEmpty() || apellido.isEmpty() || contraseña.isEmpty() || email.isEmpty() || nombre.isEmpty()) { 
 	        JOptionPane.showMessageDialog(null, "⚠️ Todos los campos obligatorios deben estar llenos.");
-	        return;
+	        return; // Se detiene la ejecución si falta información.
 	    }
 
-	    // Crear instancia de DAO y registrar usuario
-	    if (!email.contains("@") || !email.contains(".")) {
+	    // Validación del formato del correo electrónico: debe contener '@' y '.'.
+	    if (!email.contains("@") || !email.contains(".")) { 
 	        JOptionPane.showMessageDialog(null, "❌ El correo electrónico no cumple con el formato", "Error", JOptionPane.WARNING_MESSAGE);
-	        email = null;
-	        
+	        email = null; // Invalida el email si el formato es incorrecto.
 	    }
-	    RegistroUsuarioDAO registroDAO = new RegistroUsuarioDAO();
-	    if (registroDAO.registrarUsuario(usuario, apellido, contraseña, email, pais, genero, nombre, pin) ) {
-	        JOptionPane.showMessageDialog(null, "✅ Usuario registrado exitosamente.");
-	        proyectito nuevoFrame = new proyectito(); // Instancssssssssia la nueva ventana
-            nuevoFrame.setVisible(true); // La muestra en pantalla
-	        dispose(); // Cierra la ventana de registro
-	        
-	    } else {
-	        JOptionPane.showMessageDialog(null, "❌ Error al registrar usuario.");
+
+	    // Crea una instancia del DAO para manejar la inserción en la base de datos.
+
+	    // Intenta registrar el usuario en la base de datos.
+	    if (registrarUsuario(usuario, apellido, contraseña, email, pais, genero, nombre, pin)) { 
+	        JOptionPane.showMessageDialog(null, "✅ Usuario registrado exitosamente."); // Mensaje de éxito.
+
+	        // Instancia una nueva ventana 'proyectito' después de registrar el usuario.
+	        proyectito nuevoFrame = new proyectito(); 
+	        nuevoFrame.setVisible(true); // Muestra la ventana.
+
+	        dispose(); // Cierra la ventana de registro actual.
+	    } else { 
+	        // Mensaje de error si la inserción en la base de datos falla.
+	        JOptionPane.showMessageDialog(null, "❌ Error al registrar usuario."); 
 	    }
-	}        
-    }
+	}
+	public boolean registrarUsuario(String usuario, String apellido, String contraseña, String email, String pais, String genero, String nombre, String pin) {
+	    // Establece la conexión con la base de datos usando 'ConexionDB'.
+	    Connection conn = ConexionDB.conectar(); // Conectar con la base de datos.
+
+	    // Si la conexión falla, se devuelve 'false', evitando que el registro continúe.
+	    if (conn == null) return false;
+
+	    try {
+	        // Prepara la consulta SQL para insertar un nuevo usuario en la tabla 'usuarios'.
+	        String sql = "INSERT INTO usuarios (username, apellido, password, email, pais, genero, nombre, pin) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	        PreparedStatement stmt = conn.prepareStatement(sql); // Crea un objeto 'PreparedStatement' para ejecutar la consulta.
+
+	        // Asigna los valores ingresados por el usuario a la consulta SQL de manera segura.
+	        stmt.setString(1, usuario); // Nombre de usuario.
+	        stmt.setString(2, apellido); // Apellido del usuario.
+	        stmt.setString(3, contraseña); // ⚠️ Se recomienda encriptar con hashing para mayor seguridad.
+	        stmt.setString(4, email); // Correo electrónico.
+	        stmt.setString(5, pais); // País de origen del usuario.
+	        stmt.setString(6, genero); // Género del usuario.
+	        stmt.setString(7, nombre); // Nombre completo del usuario.
+	        stmt.setString(8, pin); // PIN de seguridad.
+
+	        // Ejecuta la consulta y verifica si la inserción fue exitosa (si afectó alguna fila).
+	        return stmt.executeUpdate() > 0; // Devuelve `true` si se insertó correctamente.
+
+	    } catch (SQLException e) {
+	        // Si ocurre un error, muestra un mensaje en la consola y devuelve 'false'.
+	        System.out.println("❌ Error al registrar usuario.");
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+}
+

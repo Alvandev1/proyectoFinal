@@ -9,8 +9,19 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Desktop;
+
 import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JTextArea;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
+import java.net.URI;
 
 public class Juego2 extends JFrame {
 
@@ -37,7 +48,9 @@ public class Juego2 extends JFrame {
 	 * Create the frame.
 	 */
 	public Juego2() {
-		setBounds(100, 100, 727, 457);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Juego2.class.getResource("/imagenes/ChatGPT.png")));
+		setTitle("LionGame");
+		setBounds(100, 100, 820, 532);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(12, 15, 22));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -45,75 +58,110 @@ public class Juego2 extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblEaSportsFc = new JLabel("EA SPORTS FC™ 25");
-		lblEaSportsFc.setBounds(43, 24, 200, 34);
-		lblEaSportsFc.setForeground(Color.WHITE);
-		lblEaSportsFc.setFont(new Font("Rockwell Condensed", Font.PLAIN, 28));
-		contentPane.add(lblEaSportsFc);
+		JButton volverButton = new JButton("Volver");
+		volverButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				entrada nuevoFrame = new entrada(""); // Instancia la nueva ventana
+	            nuevoFrame.setVisible(true); // La muestra en pantalla
+	            dispose();
+			}
+		});
 		
-		JLabel lblEaSportsFc_1 = new JLabel("EA SPORTS FC™ 25 te ofrece más formas de ganar por el club. ");
-		lblEaSportsFc_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEaSportsFc_1.setForeground(Color.WHITE);
-		lblEaSportsFc_1.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
-		lblEaSportsFc_1.setBounds(306, 93, 392, 27);
-		contentPane.add(lblEaSportsFc_1);
-		
-		JLabel lblFormaEquipoCon = new JLabel("Forma equipo con tus colegas en tus modos favoritos ");
-		lblFormaEquipoCon.setHorizontalAlignment(SwingConstants.CENTER);
-		lblFormaEquipoCon.setForeground(Color.WHITE);
-		lblFormaEquipoCon.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
-		lblFormaEquipoCon.setBounds(316, 116, 373, 27);
-		contentPane.add(lblFormaEquipoCon);
-		
-		JLabel lblConElNuevo = new JLabel("con el nuevo Rush de 5 contra 5 y lleva a tu club a la victoria ");
-		lblConElNuevo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblConElNuevo.setForeground(Color.WHITE);
-		lblConElNuevo.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
-		lblConElNuevo.setBounds(278, 131, 471, 34);
-		contentPane.add(lblConElNuevo);
-		
-		JLabel lblGraciasAUn = new JLabel("gracias a un control táctico más realista que nunca con FC IQ.");
-		lblGraciasAUn.setHorizontalAlignment(SwingConstants.CENTER);
-		lblGraciasAUn.setForeground(Color.WHITE);
-		lblGraciasAUn.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
-		lblGraciasAUn.setBounds(266, 154, 483, 27);
-		contentPane.add(lblGraciasAUn);
-		
-		JLabel lblNewLabel_1 = new JLabel("Comprar EA SPORTS FC™ 25");
-		lblNewLabel_1.setForeground(Color.WHITE);
-		lblNewLabel_1.setFont(new Font("Rockwell Condensed", Font.PLAIN, 28));
-		lblNewLabel_1.setEnabled(false);
-		lblNewLabel_1.setBounds(10, 285, 296, 60);
-		contentPane.add(lblNewLabel_1);
-		
-		JLabel lblNewLabel_1_1 = new JLabel("Comprar EA SPORTS FC™ 25 Ultimate Edition");
-		lblNewLabel_1_1.setForeground(Color.WHITE);
-		lblNewLabel_1_1.setFont(new Font("Rockwell Condensed", Font.PLAIN, 28));
-		lblNewLabel_1_1.setEnabled(false);
-		lblNewLabel_1_1.setBounds(10, 351, 439, 70);
-		contentPane.add(lblNewLabel_1_1);
-		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(10, 55, 301, 233);
-		ImageIcon icono2=new ImageIcon(PlayStation.class.getResource("/imagenes/fifa1.jpg"));
-		Image imagen2 = icono2.getImage().getScaledInstance(lblNewLabel.getWidth(), lblNewLabel.getHeight(), Image.SCALE_SMOOTH); 
-		ImageIcon iconoAjustado2 = new ImageIcon(imagen2);
-		lblNewLabel.setIcon(iconoAjustado2);
-		contentPane.add(lblNewLabel);
-		
-		JLabel lblNewLabel_3 = new JLabel("69,99€");
-		lblNewLabel_3.setForeground(Color.GREEN);
-		lblNewLabel_3.setFont(new Font("Rockwell Condensed", Font.PLAIN, 28));
-		lblNewLabel_3.setBackground(new Color(51, 255, 51));
-		lblNewLabel_3.setBounds(311, 291, 69, 49);
-		contentPane.add(lblNewLabel_3);
-		
-		JLabel lblNewLabel_3_2 = new JLabel("99,99€");
-		lblNewLabel_3_2.setForeground(Color.GREEN);
-		lblNewLabel_3_2.setFont(new Font("Rockwell Condensed", Font.PLAIN, 28));
-		lblNewLabel_3_2.setBackground(new Color(51, 255, 51));
-		lblNewLabel_3_2.setBounds(454, 361, 69, 60);
-		contentPane.add(lblNewLabel_3_2);
-	}
+		volverButton.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                volverButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia a "mano"
+            }
 
+            public void mouseExited(MouseEvent e) {
+                volverButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // Vuelve al normal
+            }
+        });
+		
+		JButton trailerButton = new JButton("Haz click aquí para ver el trailer");
+		trailerButton.setHorizontalAlignment(SwingConstants.LEFT);
+		trailerButton.setFont(new Font("Verdana", Font.BOLD, 20));
+		trailerButton.setForeground(new Color(255, 255, 255));
+		trailerButton.setOpaque(false);
+		trailerButton.setContentAreaFilled(false);
+		trailerButton.setBorderPainted(false);
+		trailerButton.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        try {
+		            // URL del trailer
+		            URI trailerLink = new URI("https://www.youtube.com/watch?v=pBM2xyco_Kg");
+		            
+		            // Verifica si Desktop es soportado y abre el navegador
+		            if (Desktop.isDesktopSupported()) {
+		                Desktop.getDesktop().browse(trailerLink);
+		            } else {
+		                System.out.println("❌ Error: No se puede abrir el enlace en este sistema.");
+		            }
+		        } catch (Exception ex) {
+		            ex.printStackTrace();
+		        }
+		    }
+		});
+
+		trailerButton.setBounds(0, 448, 551, 21);
+		contentPane.add(trailerButton);
+		volverButton.setForeground(Color.WHITE);
+		volverButton.setFont(new Font("Verdana", Font.BOLD, 15));
+		volverButton.setBackground(Color.GRAY);
+		volverButton.setBounds(658, 409, 138, 60);
+		contentPane.add(volverButton);
+		
+		JLabel tituloLabel = new JLabel("EA SPORTS FC™ 25");
+		tituloLabel.setBounds(10, 23, 360, 34);
+		tituloLabel.setForeground(Color.WHITE);
+		tituloLabel.setFont(new Font("Verdana", Font.BOLD, 28));
+		contentPane.add(tituloLabel);
+		
+		JLabel anuncioLabel = new JLabel("Comprar EA SPORTS FC™ 25");
+		anuncioLabel.setForeground(new Color(255, 255, 255));
+		anuncioLabel.setFont(new Font("Verdana", Font.BOLD, 28));
+		anuncioLabel.setBounds(10, 340, 486, 60);
+		contentPane.add(anuncioLabel);
+		
+		JLabel imagenLabel = new JLabel("");
+		imagenLabel.setBounds(10, 66, 446, 270);
+		ImageIcon icono2=new ImageIcon(PlayStation.class.getResource("/imagenes/fifa1.jpg"));
+		Image imagen2 = icono2.getImage().getScaledInstance(imagenLabel.getWidth(), imagenLabel.getHeight(), Image.SCALE_SMOOTH); 
+		ImageIcon iconoAjustado2 = new ImageIcon(imagen2);
+		imagenLabel.setIcon(iconoAjustado2);
+		contentPane.add(imagenLabel);
+		
+		JLabel precioLabel = new JLabel("69,99€");
+		precioLabel.setForeground(Color.GREEN);
+		precioLabel.setFont(new Font("Verdana", Font.BOLD, 28));
+		precioLabel.setBackground(new Color(0, 204, 0));
+		precioLabel.setBounds(10, 392, 122, 49);
+		contentPane.add(precioLabel);
+		
+		JButton comprarButton = new JButton("Comprar");
+		comprarButton.setBackground(new Color(128, 128, 128));
+		comprarButton.setForeground(new Color(255, 255, 255));
+		comprarButton.setFont(new Font("Verdana", Font.BOLD, 15));
+		comprarButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pago nuevoFrame = new pago(); // Instancia la nueva ventana
+	            nuevoFrame.setVisible(true); // La muestra en pantalla
+			}
+		});
+		comprarButton.setBounds(485, 409, 138, 60);
+		contentPane.add(comprarButton);
+		
+		JTextArea descripcionLabel = new JTextArea();
+		descripcionLabel.setForeground(new Color(255, 255, 255));
+		descripcionLabel.setFont(new Font("Verdana", Font.PLAIN, 20));
+		descripcionLabel.setText("Descubre más formas de ganar\r\npor el club en EA SPORTS FC 25. \r\nForma equipo con tus colegas \r\nen tus modos favoritos con el \r\nnuevo Rush de 5c5 y triunfa \r\ngracias a un control táctico más\r\nrealista que nunca con FC IQ.");
+		descripcionLabel.setBounds(466, 157, 330, 193);
+		descripcionLabel.setOpaque(false);
+
+		contentPane.add(descripcionLabel);
+		
+		JLabel fondoLabel = new JLabel("");
+		fondoLabel.setIcon(new ImageIcon(Juego2.class.getResource("/imagenes/fondo.png")));
+		fondoLabel.setBounds(0, 0, 806, 495);
+		contentPane.add(fondoLabel);
+	}
 }

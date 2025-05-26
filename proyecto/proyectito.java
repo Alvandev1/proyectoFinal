@@ -12,6 +12,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -51,6 +54,7 @@ public class proyectito extends JFrame {
 	 * Create the frame.
 	 */
 	public proyectito() {
+		setTitle("LionGame");
 		setResizable(false);
 		setForeground(new Color(255, 255, 255));
 		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Alfonso\\Downloads\\ChatGPT Image 21 may 2025, 09_47_302.png"));
@@ -108,7 +112,7 @@ public class proyectito extends JFrame {
 
 		            gifLabel.setVisible(false); // Ocultar el GIF después de la carga
 
-		            if (AuteticacionJava.iniciarSesion(usuario, contraseña)) {
+		            if (iniciarSesion(usuario, contraseña)) {
 		                usuarioLogueado = usuario;
 		                JOptionPane.showMessageDialog(null, "✅ Inicio de sesión exitoso");
 		                
@@ -215,10 +219,42 @@ public class proyectito extends JFrame {
 		passwordField.setBounds(300, 206, 260, 35);
 		contentPane.add(passwordField);
 		
-		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon(proyectito.class.getResource("/imagenes/fondo.png")));
-		lblNewLabel_1.setBounds(0, 0, 816, 495);
-		contentPane.add(lblNewLabel_1);	
+		JLabel fondoLabel = new JLabel("");
+		fondoLabel.setIcon(new ImageIcon(proyectito.class.getResource("/imagenes/fondo.png")));
+		fondoLabel.setBounds(0, 0, 816, 495);
+		contentPane.add(fondoLabel);	
 	}	
-	private static String usuarioLogueado = "";	
-}
+	private static String usuarioLogueado = "";
+	
+	
+	public static boolean iniciarSesion(String usuario, String contraseña) {
+	    // Establece conexión con la base de datos usando la clase ConexionDB.
+	    Connection conn = ConexionDB.conectar(); 
+
+	    // Si la conexión falla, devuelve 'false', indicando que el inicio de sesión no es posible.
+	    if (conn == null) return false; 
+
+	    try {
+	        // Prepara la consulta SQL para buscar el usuario y su contraseña en la tabla 'usuarios'.
+	        String query = "SELECT * FROM usuarios WHERE username = ? AND password = ?"; 
+	        PreparedStatement stmt = conn.prepareStatement(query); 
+
+	        // Establece los valores ingresados por el usuario en la consulta SQL de manera segura.
+	        stmt.setString(1, usuario); // Reemplaza el primer '?' por el nombre de usuario.
+	        stmt.setString(2, contraseña); // Reemplaza el segundo '?' por la contraseña.
+
+	        // Ejecuta la consulta en la base de datos y almacena el resultado.
+	        ResultSet rs = stmt.executeQuery(); 
+
+	        // Si la consulta encuentra un usuario que coincida, devuelve 'true', indicando éxito.
+	        return rs.next(); 
+
+	    } catch (Exception e) {
+	        // Si ocurre un error durante la ejecución de la consulta, imprime el error en la consola.
+	        e.printStackTrace(); 
+
+	        // Devuelve 'false', indicando que el inicio de sesión falló por algún error.
+	        return false; 
+	    }
+	}
+	}

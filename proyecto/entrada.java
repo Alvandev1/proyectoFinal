@@ -10,10 +10,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
+import java.awt.Cursor;
+
 import javax.swing.JSeparator;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
@@ -23,11 +30,7 @@ public class entrada extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -41,10 +44,8 @@ public class entrada extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public entrada(String usuario) {
+		setTitle("LionGame");
 		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Alfonso\\Downloads\\ChatGPT Image 21 may 2025, 09_47_302.png"));
 		setBounds(100, 100, 820, 532);
 		contentPane = new JPanel();
@@ -52,6 +53,8 @@ public class entrada extends JFrame {
 		contentPane.setForeground(Color.LIGHT_GRAY);
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
+		
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -62,56 +65,85 @@ public class entrada extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				PlayStation playStationVentana = new PlayStation();
 		        playStationVentana.setVisible(true);
-		 
+		        dispose();
 			}
+		});		
+		
+		playButton.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                playButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia a "mano"
+            }
+
+            public void mouseExited(MouseEvent e) {
+                playButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // Vuelve al normal
+            }
+        });
+		
+		JButton borrarButton = new JButton("Borrar cuenta");
+		borrarButton.addActionListener(e -> {
+		    String usuarioEliminar = JOptionPane.showInputDialog("🗑 Ingrese el usuario a eliminar:");
+		    String contraseñaEliminar = JOptionPane.showInputDialog("🔑 Ingrese la contraseña:");
+
+		    if (usuarioEliminar != null && contraseñaEliminar != null) {
+		        eliminarUsuario(usuarioEliminar, contraseñaEliminar);
+		    } else {
+		        JOptionPane.showMessageDialog(null, "⚠️ Cancelado.");
+		    }
 		});
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setIcon(new ImageIcon(entrada.class.getResource("/imagenes/ChatGPT.png")));
-		lblNewLabel_1.setBounds(10, 16, 75, 68);
-		contentPane.add(lblNewLabel_1);
+		JLabel usuariosLabel = new JLabel("Usuarios registrados");
+		usuariosLabel.setForeground(new Color(255, 255, 255));
+		usuariosLabel.setFont(new Font("Verdana", Font.BOLD, 20));
+		usuariosLabel.setBounds(276, 21, 317, 27);
+		contentPane.add(usuariosLabel);
+		mostrarCantidadUsuarios(usuariosLabel);
+
+
+		borrarButton.setForeground(Color.WHITE);
+		borrarButton.setFont(new Font("Verdana", Font.BOLD, 15));
+		borrarButton.setBackground(Color.GRAY);
+		borrarButton.setBounds(618, 16, 178, 40);
+		contentPane.add(borrarButton);
 		
-		JButton btnPc_5 = new JButton("Plataform");
-		btnPc_5.setForeground(Color.WHITE);
-		btnPc_5.setFont(new Font("Verdana", Font.BOLD, 15));
-		btnPc_5.setBackground(Color.GRAY);
-		btnPc_5.setBounds(148, 434, 118, 40);
-		contentPane.add(btnPc_5);
+		JLabel logoLabel = new JLabel("New label");
+		logoLabel.setIcon(new ImageIcon(entrada.class.getResource("/imagenes/ChatGPT.png")));
+		logoLabel.setBounds(10, 16, 75, 68);
+		contentPane.add(logoLabel);
 		
-		JButton btnPc_4 = new JButton("Disparos");
-		btnPc_4.setForeground(Color.WHITE);
-		btnPc_4.setFont(new Font("Verdana", Font.BOLD, 15));
-		btnPc_4.setBackground(Color.GRAY);
-		btnPc_4.setBounds(148, 361, 118, 40);
-		contentPane.add(btnPc_4);
+		JButton disparosButton = new JButton("Disparos");
+		disparosButton.setForeground(Color.WHITE);
+		disparosButton.setFont(new Font("Verdana", Font.BOLD, 15));
+		disparosButton.setBackground(Color.GRAY);
+		disparosButton.setBounds(148, 421, 118, 40);
+		contentPane.add(disparosButton);
 		
-		JButton btnPc_3 = new JButton("Puzzle");
-		btnPc_3.setForeground(Color.WHITE);
-		btnPc_3.setFont(new Font("Verdana", Font.BOLD, 15));
-		btnPc_3.setBackground(Color.GRAY);
-		btnPc_3.setBounds(148, 287, 118, 40);
-		contentPane.add(btnPc_3);
+		JButton puzzleButton = new JButton("Puzzle");
+		puzzleButton.setForeground(Color.WHITE);
+		puzzleButton.setFont(new Font("Verdana", Font.BOLD, 15));
+		puzzleButton.setBackground(Color.GRAY);
+		puzzleButton.setBounds(148, 327, 118, 40);
+		contentPane.add(puzzleButton);
 		
-		JButton btnPc_2 = new JButton("Deporte");
-		btnPc_2.setForeground(Color.WHITE);
-		btnPc_2.setFont(new Font("Verdana", Font.BOLD, 15));
-		btnPc_2.setBackground(Color.GRAY);
-		btnPc_2.setBounds(148, 211, 118, 40);
-		contentPane.add(btnPc_2);
+		JButton deporteButton = new JButton("Deporte");
+		deporteButton.setForeground(Color.WHITE);
+		deporteButton.setFont(new Font("Verdana", Font.BOLD, 15));
+		deporteButton.setBackground(Color.GRAY);
+		deporteButton.setBounds(148, 233, 118, 40);
+		contentPane.add(deporteButton);
 		
-		JButton aventura = new JButton("Aventura");
-		aventura.setForeground(Color.WHITE);
-		aventura.setFont(new Font("Verdana", Font.BOLD, 15));
-		aventura.setBackground(Color.GRAY);
-		aventura.setBounds(148, 138, 118, 40);
-		contentPane.add(aventura);
+		JButton aventuraButton = new JButton("Aventura");
+		aventuraButton.setForeground(Color.WHITE);
+		aventuraButton.setFont(new Font("Verdana", Font.BOLD, 15));
+		aventuraButton.setBackground(Color.GRAY);
+		aventuraButton.setBounds(148, 138, 118, 40);
+		contentPane.add(aventuraButton);
 		
-		JLabel lblNuevaContrasea_1_1_2 = new JLabel("Categorias");
-		lblNuevaContrasea_1_1_2.setForeground(Color.WHITE);
-		lblNuevaContrasea_1_1_2.setFont(new Font("Verdana", Font.BOLD, 18));
-		lblNuevaContrasea_1_1_2.setBounds(153, 83, 129, 44);
-		contentPane.add(lblNuevaContrasea_1_1_2);
-		playButton.setBounds(10, 287, 118, 40);
+		JLabel categoriasLabel = new JLabel("Categorias");
+		categoriasLabel.setForeground(Color.WHITE);
+		categoriasLabel.setFont(new Font("Verdana", Font.BOLD, 18));
+		categoriasLabel.setBounds(153, 83, 129, 44);
+		contentPane.add(categoriasLabel);
+		playButton.setBounds(10, 327, 118, 40);
 		playButton.setBackground(new Color(128, 128, 128));
 		playButton.setFont(new Font("Verdana", Font.BOLD, 15));
 		contentPane.add(playButton);
@@ -121,15 +153,24 @@ public class entrada extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Xbox Xboxventana = new Xbox();
 				Xboxventana.setVisible(true);
+				dispose();
 			}
 		});
-		xboxButton.setBounds(10, 211, 118, 41);
+		xboxButton.setBounds(10, 233, 118, 41);
 		xboxButton.setBackground(new Color(128, 128, 128));
 		xboxButton.setForeground(new Color(255, 255, 255));
 		xboxButton.setFont(new Font("Verdana", Font.BOLD, 15));
 		contentPane.add(xboxButton);
 		
-		
+		xboxButton.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                xboxButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia a "mano"
+            }
+
+            public void mouseExited(MouseEvent e) {
+                xboxButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // Vuelve al normal
+            }
+        });
 		JButton pcButton = new JButton("PC");
 		pcButton.setForeground(new Color(255, 255, 255));
 		pcButton.setBounds(10, 138, 118, 40);
@@ -139,22 +180,43 @@ public class entrada extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				PC PCventana = new PC();
 				PCventana.setVisible(true);
+				dispose();
 			}
 		});
+		pcButton.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                pcButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia a "mano"
+            }
+
+            public void mouseExited(MouseEvent e) {
+                pcButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // Vuelve al normal
+            }
+        });
 		contentPane.add(pcButton);
 		
 		JButton switchButton = new JButton("Switch");
 		switchButton.setForeground(new Color(255, 255, 255));
-		switchButton.setBounds(10, 361, 118, 41);
+		switchButton.setBounds(10, 421, 118, 41);
 		switchButton.setBackground(new Color(128, 128, 128));
 		switchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				NintendoSwitch NintendoSwitchventana = new NintendoSwitch();
 				NintendoSwitchventana.setVisible(true);
+				dispose();
 			}
 		});
 		switchButton.setFont(new Font("Verdana", Font.BOLD, 15));
 		contentPane.add(switchButton);
+		
+		switchButton.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                switchButton.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Cambia a "mano"
+            }
+
+            public void mouseExited(MouseEvent e) {
+                switchButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // Vuelve al normal
+            }
+        });
 		
 		JLabel bienvenidaLabel = new JLabel("Bienvenido de nuevo " + usuario);
 		bienvenidaLabel.setForeground(new Color(255, 255, 255));
@@ -168,166 +230,153 @@ public class entrada extends JFrame {
 		plataformasLabel.setFont(new Font("Verdana", Font.BOLD, 18));
 		contentPane.add(plataformasLabel);
 		
-		JButton rebajasButton = new JButton("Rebajas ");
-		rebajasButton.setForeground(new Color(255, 255, 255));
-		rebajasButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Rebajas Rebajasventana = new Rebajas();
-				Rebajasventana.setVisible(true); 
-			}
-		});
-		rebajasButton.setBounds(10, 434, 118, 41);
-		rebajasButton.setBackground(new Color(128, 128, 128));
-		rebajasButton.setFont(new Font("Verdana", Font.BOLD, 15));
-		contentPane.add(rebajasButton);
-		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(372, 76, 3, 411);
 		contentPane.add(separator_1);
 		
-		JLabel lblNuevaContrasea_1_1_1 = new JLabel("Top 10 Ventas ");
-		lblNuevaContrasea_1_1_1.setForeground(new Color(255, 255, 255));
-		lblNuevaContrasea_1_1_1.setBounds(579, 92, 189, 44);
-		lblNuevaContrasea_1_1_1.setFont(new Font("Verdana", Font.BOLD, 18));
-		contentPane.add(lblNuevaContrasea_1_1_1);
+		JLabel topLabel = new JLabel("Top 10 Ventas ");
+		topLabel.setForeground(new Color(255, 255, 255));
+		topLabel.setBounds(579, 92, 189, 44);
+		topLabel.setFont(new Font("Verdana", Font.BOLD, 18));
+		contentPane.add(topLabel);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(516, 138, 317, 324);
-		panel.setBackground(new Color(128, 128, 128));
-		panel.setToolTipText("");
-		contentPane.add(panel);
-		panel.setLayout(null);
+		JPanel cuadroPanel = new JPanel();
+		cuadroPanel.setBounds(516, 138, 317, 324);
+		cuadroPanel.setBackground(new Color(128, 128, 128));
+		cuadroPanel.setToolTipText("");
+		contentPane.add(cuadroPanel);
+		cuadroPanel.setLayout(null);
 		
-		JLabel lblNuevaContrasea_1_1_1_3 = new JLabel("1. Monster Hunter Wilds \r\n");
-		lblNuevaContrasea_1_1_1_3.setForeground(new Color(255, 255, 255));
-		lblNuevaContrasea_1_1_1_3.addMouseListener(new MouseAdapter() {
+		JLabel monsterLabel = new JLabel("1. Monster Hunter Wilds \r\n");
+		monsterLabel.setForeground(new Color(255, 255, 255));
+		monsterLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Juego1 a=new Juego1();
 				a.setVisible(true);
 			}
 		});
-		lblNuevaContrasea_1_1_1_3.setBounds(10, 10, 326, 21);
-		lblNuevaContrasea_1_1_1_3.setFont(new Font("Verdana", Font.BOLD, 17));
-		panel.add(lblNuevaContrasea_1_1_1_3);
+		monsterLabel.setBounds(10, 10, 326, 21);
+		monsterLabel.setFont(new Font("Verdana", Font.BOLD, 17));
+		cuadroPanel.add(monsterLabel);
 		
-		JLabel lblNuevaContrasea_1_1_1_4 = new JLabel("7. Call of Duty Black Ops 6 ");
-		lblNuevaContrasea_1_1_1_4.setForeground(new Color(255, 255, 255));
-		lblNuevaContrasea_1_1_1_4.addMouseListener(new MouseAdapter() {
+		JLabel bo6Label = new JLabel("7. Call of Duty Black Ops 6 ");
+		bo6Label.setForeground(new Color(255, 255, 255));
+		bo6Label.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Juego7 a= new Juego7();
 				a.setVisible(true);
 			}
 		});
-		lblNuevaContrasea_1_1_1_4.setBounds(10, 196, 326, 21);
-		lblNuevaContrasea_1_1_1_4.setFont(new Font("Verdana", Font.BOLD, 17));
-		panel.add(lblNuevaContrasea_1_1_1_4);
+		bo6Label.setBounds(10, 196, 326, 21);
+		bo6Label.setFont(new Font("Verdana", Font.BOLD, 17));
+		cuadroPanel.add(bo6Label);
 		
-		JLabel lblNuevaContrasea_1_1_1_5 = new JLabel("6. NBA 2K25");
-		lblNuevaContrasea_1_1_1_5.setForeground(new Color(255, 255, 255));
-		lblNuevaContrasea_1_1_1_5.addMouseListener(new MouseAdapter() {
+		JLabel nbaLabel = new JLabel("6. NBA 2K25");
+		nbaLabel.setForeground(new Color(255, 255, 255));
+		nbaLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Juego6 a= new Juego6();
 				a.setVisible(true);
 			}
 		});
-		lblNuevaContrasea_1_1_1_5.setBounds(10, 165, 309, 21);
-		lblNuevaContrasea_1_1_1_5.setFont(new Font("Verdana", Font.BOLD, 17));
-		panel.add(lblNuevaContrasea_1_1_1_5);
+		nbaLabel.setBounds(10, 165, 309, 21);
+		nbaLabel.setFont(new Font("Verdana", Font.BOLD, 17));
+		cuadroPanel.add(nbaLabel);
 		
-		JLabel lblNuevaContrasea_1_1_1_6 = new JLabel("8. Mario Party Jamboree ");
-		lblNuevaContrasea_1_1_1_6.setForeground(new Color(255, 255, 255));
-		lblNuevaContrasea_1_1_1_6.addMouseListener(new MouseAdapter() {
+		JLabel partyLabel = new JLabel("8. Mario Party Jamboree ");
+		partyLabel.setForeground(new Color(255, 255, 255));
+		partyLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Juego8 a= new Juego8();
 				a.setVisible(true);
 			}
 		});
-		lblNuevaContrasea_1_1_1_6.setBounds(10, 227, 326, 21);
-		lblNuevaContrasea_1_1_1_6.setFont(new Font("Verdana", Font.BOLD, 17));
-		panel.add(lblNuevaContrasea_1_1_1_6);
+		partyLabel.setBounds(10, 227, 326, 21);
+		partyLabel.setFont(new Font("Verdana", Font.BOLD, 17));
+		cuadroPanel.add(partyLabel);
 		
-		JLabel lblNuevaContrasea_1_1_1_7 = new JLabel("9. Mario Bros Wonder ");
-		lblNuevaContrasea_1_1_1_7.setForeground(new Color(255, 255, 255));
-		lblNuevaContrasea_1_1_1_7.addMouseListener(new MouseAdapter() {
+		JLabel wonderLabel = new JLabel("9. Mario Bros Wonder ");
+		wonderLabel.setForeground(new Color(255, 255, 255));
+		wonderLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Juego9 a= new Juego9();
 				a.setVisible(true);
 			}
 		});
-		lblNuevaContrasea_1_1_1_7.setBounds(10, 258, 309, 21);
-		lblNuevaContrasea_1_1_1_7.setFont(new Font("Verdana", Font.BOLD, 17));
-		panel.add(lblNuevaContrasea_1_1_1_7);
+		wonderLabel.setBounds(10, 258, 309, 21);
+		wonderLabel.setFont(new Font("Verdana", Font.BOLD, 17));
+		cuadroPanel.add(wonderLabel);
 		
-		JLabel lblNuevaContrasea_1_1_1_8 = new JLabel("2. EA Sports FC 25");
-		lblNuevaContrasea_1_1_1_8.setBackground(new Color(240, 240, 240));
-		lblNuevaContrasea_1_1_1_8.setForeground(new Color(255, 255, 255));
-		lblNuevaContrasea_1_1_1_8.addMouseListener(new MouseAdapter() {
+		JLabel fc25Label = new JLabel("2. EA Sports FC 25");
+		fc25Label.setBackground(new Color(240, 240, 240));
+		fc25Label.setForeground(new Color(255, 255, 255));
+		fc25Label.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Juego2 a=new Juego2();
 				a.setVisible(true);
 			}
 		});
-		lblNuevaContrasea_1_1_1_8.setBounds(10, 41, 257, 21);
-		lblNuevaContrasea_1_1_1_8.setFont(new Font("Verdana", Font.BOLD, 17));
-		panel.add(lblNuevaContrasea_1_1_1_8);
+		fc25Label.setBounds(10, 41, 257, 21);
+		fc25Label.setFont(new Font("Verdana", Font.BOLD, 17));
+		cuadroPanel.add(fc25Label);
 		
-		JLabel lblNuevaContrasea_1_1_1_9 = new JLabel("3. Black Myth: Wukong ");
-		lblNuevaContrasea_1_1_1_9.setForeground(new Color(255, 255, 255));
-		lblNuevaContrasea_1_1_1_9.addMouseListener(new MouseAdapter() {
+		JLabel wukongLabel = new JLabel("3. Black Myth: Wukong ");
+		wukongLabel.setForeground(new Color(255, 255, 255));
+		wukongLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Juego3 a= new Juego3();
 				a.setVisible(true);
 			}
 		});
-		lblNuevaContrasea_1_1_1_9.setBounds(10, 72, 332, 21);
-		lblNuevaContrasea_1_1_1_9.setFont(new Font("Verdana", Font.BOLD, 17));
-		panel.add(lblNuevaContrasea_1_1_1_9);
+		wukongLabel.setBounds(10, 72, 332, 21);
+		wukongLabel.setFont(new Font("Verdana", Font.BOLD, 17));
+		cuadroPanel.add(wukongLabel);
 		
-		JLabel lblNuevaContrasea_1_1_1_10 = new JLabel("4. Assassin’s Creed Shadows ");
-		lblNuevaContrasea_1_1_1_10.setForeground(new Color(255, 255, 255));
-		lblNuevaContrasea_1_1_1_10.addMouseListener(new MouseAdapter() {
+		JLabel asassinsLabel = new JLabel("4. Assassin’s Creed Shadows ");
+		asassinsLabel.setForeground(new Color(255, 255, 255));
+		asassinsLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Juego4 a= new Juego4();
 				a.setVisible(true);
 			}
 		});
-		lblNuevaContrasea_1_1_1_10.setBounds(10, 103, 347, 21);
-		lblNuevaContrasea_1_1_1_10.setFont(new Font("Verdana", Font.BOLD, 17));
-		panel.add(lblNuevaContrasea_1_1_1_10);
+		asassinsLabel.setBounds(10, 103, 347, 21);
+		asassinsLabel.setFont(new Font("Verdana", Font.BOLD, 17));
+		cuadroPanel.add(asassinsLabel);
 		
-		JLabel lblNuevaContrasea_1_1_1_2 = new JLabel("10. Grand Theft Auto V");
-		lblNuevaContrasea_1_1_1_2.setForeground(new Color(255, 255, 255));
-		lblNuevaContrasea_1_1_1_2.addMouseListener(new MouseAdapter() {
+		JLabel gtaLabel = new JLabel("10. Grand Theft Auto V");
+		gtaLabel.setForeground(new Color(255, 255, 255));
+		gtaLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Juego10 a= new Juego10();
 				a.setVisible(true);
 			}
 		});
-		lblNuevaContrasea_1_1_1_2.setBounds(10, 289, 263, 21);
-		lblNuevaContrasea_1_1_1_2.setFont(new Font("Verdana", Font.BOLD, 17));
-		panel.add(lblNuevaContrasea_1_1_1_2);
+		gtaLabel.setBounds(10, 289, 263, 21);
+		gtaLabel.setFont(new Font("Verdana", Font.BOLD, 17));
+		cuadroPanel.add(gtaLabel);
 		
-		JLabel lblNuevaContrasea_1_1_1_1 = new JLabel("5. The Elder Scrolls IV");
-		lblNuevaContrasea_1_1_1_1.setForeground(new Color(255, 255, 255));
-		lblNuevaContrasea_1_1_1_1.addMouseListener(new MouseAdapter() {
+		JLabel elderLabel = new JLabel("5. The Elder Scrolls IV");
+		elderLabel.setForeground(new Color(255, 255, 255));
+		elderLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Juego5 a= new Juego5();
 				a.setVisible(true);
 			}
 		});
-		lblNuevaContrasea_1_1_1_1.setBounds(10, 134, 309, 21);
-		lblNuevaContrasea_1_1_1_1.setFont(new Font("Verdana", Font.BOLD, 17));
-		panel.add(lblNuevaContrasea_1_1_1_1);
+		elderLabel.setBounds(10, 134, 309, 21);
+		elderLabel.setFont(new Font("Verdana", Font.BOLD, 17));
+		cuadroPanel.add(elderLabel);
 		
 		JLabel tituloLabel = new JLabel("LionGame");
 		tituloLabel.setForeground(new Color(255, 255, 0));
@@ -335,9 +384,70 @@ public class entrada extends JFrame {
 		tituloLabel.setBounds(88, 10, 178, 44);
 		contentPane.add(tituloLabel);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(entrada.class.getResource("/imagenes/fondo.png")));
-		lblNewLabel.setBounds(0, 0, 806, 495);
-		contentPane.add(lblNewLabel);
+		JLabel fondoLabel = new JLabel("");
+		fondoLabel.setIcon(new ImageIcon(entrada.class.getResource("/imagenes/fondo.png")));
+		fondoLabel.setBounds(0, 0, 806, 495);
+		contentPane.add(fondoLabel);
+	}
+	
+	
+	public void eliminarUsuario(String usuario, String contraseña) {
+	    Connection conn = ConexionDB.conectar();
+	    if (conn == null) {
+	        JOptionPane.showMessageDialog(null, "❌ Error al conectar con la base de datos.");
+	        return;
+	    }
+
+	    try {
+	        // Verificar si el usuario y la contraseña coinciden
+	        String sqlCheck = "SELECT * FROM usuarios WHERE username = ? AND password = ?";
+	        PreparedStatement stmtCheck = conn.prepareStatement(sqlCheck);
+	        stmtCheck.setString(1, usuario);
+	        stmtCheck.setString(2, contraseña);
+	        ResultSet rs = stmtCheck.executeQuery();
+
+	        if (rs.next()) {
+	            // Si coincide, eliminar el usuario
+	            String sqlDelete = "DELETE FROM usuarios WHERE username = ?";
+	            PreparedStatement stmtDelete = conn.prepareStatement(sqlDelete);
+	            stmtDelete.setString(1, usuario);
+	            stmtDelete.executeUpdate();
+
+	            JOptionPane.showMessageDialog(null, "✅ Usuario eliminado correctamente.");
+	            proyectito nuevoFrame = new proyectito(); // Instancia la nueva ventana
+	            nuevoFrame.setVisible(true); // La muestra en pantalla
+	            dispose();
+	        } else {
+	            JOptionPane.showMessageDialog(null, "❌ Usuario o contraseña incorrectos.");
+	        }
+
+	        conn.close();
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	    }
+	}
+	public void mostrarCantidadUsuarios(JLabel labelUsuarios) {
+	    Connection conn = ConexionDB.conectar();
+	    if (conn == null) {
+	        labelUsuarios.setText("❌ Error al conectar con la base de datos.");
+	        return;
+	    }
+
+	    try {
+	        String sql = "SELECT contar_usuarios() AS total";
+	        PreparedStatement stmt = conn.prepareStatement(sql);
+	        ResultSet rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            int totalUsuarios = rs.getInt("total");
+	            labelUsuarios.setText("👥 Usuarios registrados: " + totalUsuarios);
+	        } else {
+	            labelUsuarios.setText("No hay usuarios registrados.");
+	        }
+
+	        conn.close();
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	    }
 	}
 }
