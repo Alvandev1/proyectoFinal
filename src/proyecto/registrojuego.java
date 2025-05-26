@@ -266,9 +266,15 @@ public class registrojuego extends JFrame {
 		contentPane.add(fondoLabel);
 	}
 	
-	private void registrarUsuario(JComboBox generoBox, JComboBox paisBox) {
+	/**
+	 * Registra un nuevo usuario en la base de datos y maneja la interfaz gráfica.
+	 * 
+	 * @param generoBox JComboBox que contiene la selección de género del usuario.
+	 * @param paisBox JComboBox que contiene la selección de país del usuario.
+	 */
+	public void registrarUsuario(JComboBox generoBox, JComboBox paisBox) {
 	    // Obtiene los valores ingresados por el usuario en los campos de texto.
-	    String usuario = userField.getText(); 
+	    String usuario = userField.getText();
 	    String apellido = apellidoField.getText();
 	    String contraseña = new String(passwordField.getPassword()); // Captura la contraseña del campo 'passwordField'.
 	    String email = emailField.getText();
@@ -289,8 +295,6 @@ public class registrojuego extends JFrame {
 	        email = null; // Invalida el email si el formato es incorrecto.
 	    }
 
-	    // Crea una instancia del DAO para manejar la inserción en la base de datos.
-
 	    // Intenta registrar el usuario en la base de datos.
 	    if (registrarUsuario(usuario, apellido, contraseña, email, pais, genero, nombre, pin)) { 
 	        JOptionPane.showMessageDialog(null, "✅ Usuario registrado exitosamente."); // Mensaje de éxito.
@@ -305,6 +309,20 @@ public class registrojuego extends JFrame {
 	        JOptionPane.showMessageDialog(null, "❌ Error al registrar usuario."); 
 	    }
 	}
+
+	/**
+	 * Realiza la inserción de un nuevo usuario en la base de datos.
+	 * 
+	 * @param usuario Nombre de usuario único.
+	 * @param apellido Apellido del usuario.
+	 * @param contraseña Contraseña del usuario. ⚠️ Se recomienda encriptarla con hashing para mayor seguridad.
+	 * @param email Dirección de correo electrónico.
+	 * @param pais País de origen del usuario.
+	 * @param genero Género seleccionado del usuario.
+	 * @param nombre Nombre completo del usuario.
+	 * @param pin Código PIN de seguridad.
+	 * @return {@code true} si la inserción fue exitosa, {@code false} si hubo un error o fallo en la conexión.
+	 */
 	public boolean registrarUsuario(String usuario, String apellido, String contraseña, String email, String pais, String genero, String nombre, String pin) {
 	    // Establece la conexión con la base de datos usando 'ConexionDB'.
 	    Connection conn = ConexionDB.conectar(); // Conectar con la base de datos.

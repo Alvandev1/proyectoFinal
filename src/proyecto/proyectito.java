@@ -227,34 +227,42 @@ public class proyectito extends JFrame {
 	private static String usuarioLogueado = "";
 	
 	
+	/**
+	 * Método que permite iniciar sesión validando las credenciales del usuario en la base de datos.
+	 *
+	 * @param usuario Nombre de usuario ingresado por el usuario.
+	 * @param contraseña Contraseña proporcionada por el usuario para autenticación.
+	 * @return {@code true} si las credenciales son correctas y el usuario existe en la base de datos,
+	 *         {@code false} si la autenticación falla o hay un error en la conexión.
+	 */
 	public static boolean iniciarSesion(String usuario, String contraseña) {
 	    // Establece conexión con la base de datos usando la clase ConexionDB.
-	    Connection conn = ConexionDB.conectar(); 
+	    Connection conn = ConexionDB.conectar();
 
 	    // Si la conexión falla, devuelve 'false', indicando que el inicio de sesión no es posible.
-	    if (conn == null) return false; 
+	    if (conn == null) return false;
 
 	    try {
 	        // Prepara la consulta SQL para buscar el usuario y su contraseña en la tabla 'usuarios'.
-	        String query = "SELECT * FROM usuarios WHERE username = ? AND password = ?"; 
-	        PreparedStatement stmt = conn.prepareStatement(query); 
+	        String query = "SELECT * FROM usuarios WHERE username = ? AND password = ?";
+	        PreparedStatement stmt = conn.prepareStatement(query);
 
 	        // Establece los valores ingresados por el usuario en la consulta SQL de manera segura.
 	        stmt.setString(1, usuario); // Reemplaza el primer '?' por el nombre de usuario.
 	        stmt.setString(2, contraseña); // Reemplaza el segundo '?' por la contraseña.
 
 	        // Ejecuta la consulta en la base de datos y almacena el resultado.
-	        ResultSet rs = stmt.executeQuery(); 
+	        ResultSet rs = stmt.executeQuery();
 
 	        // Si la consulta encuentra un usuario que coincida, devuelve 'true', indicando éxito.
-	        return rs.next(); 
+	        return rs.next();
 
 	    } catch (Exception e) {
 	        // Si ocurre un error durante la ejecución de la consulta, imprime el error en la consola.
-	        e.printStackTrace(); 
+	        e.printStackTrace();
 
 	        // Devuelve 'false', indicando que el inicio de sesión falló por algún error.
-	        return false; 
+	        return false;
 	    }
 	}
 	}

@@ -152,7 +152,15 @@ public class pago extends JFrame {
 		contentPane.add(lblNewLabel);
 	}
 	
-	private boolean validarUsuario(String nombre, String pin) {
+	/**
+	 * Valida si un usuario existe en la base de datos verificando su nombre y PIN.
+	 *
+	 * @param nombre Nombre del usuario a validar.
+	 * @param pin Código PIN asociado al usuario para autenticación.
+	 * @return {@code true} si el usuario y el PIN coinciden en la base de datos, {@code false} si no existe
+	 *         o hay un problema en la conexión.
+	 */
+	public boolean validarUsuario(String nombre, String pin) {
 	    try {
 	        // Establece la conexión con la base de datos a través de 'ConexionDB'.
 	        Connection con = ConexionDB.conectar(); // Usamos la conexión establecida.

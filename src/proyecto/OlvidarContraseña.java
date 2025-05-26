@@ -177,28 +177,45 @@ public class OlvidarContraseña extends JFrame {
 		contentPane.add(pinLabel);
 	}
 	
+	/**
+	 * Recupera las credenciales de acceso verificando la identidad del usuario en la base de datos.
+	 * 
+	 * Se validan los datos ingresados, incluyendo el formato del correo electrónico y la presencia
+	 * de valores en todos los campos antes de proceder con la recuperación de credenciales.
+	 */
 	private void recuperarCredenciales() {
 	    // Obtiene los valores ingresados por el usuario en los campos de texto.
-	    String usuario = userField.getText(); 
+	    String usuario = userField.getText();
 	    String email = emailField.getText();
 	    String pin = pinField.getText();
 	    
-	    // Verifica si el correo electrónico tiene un formato válido (debe contener "@" y ".").
+	    /**
+	     * Verifica que el formato del correo electrónico sea válido.
+	     * Debe contener al menos "@" y "." para ser considerado correcto.
+	     */
 	    if (!email.contains("@") || !email.contains(".")) { 
 	        JOptionPane.showMessageDialog(null, "❌ El correo electrónico no cumple con el formato", "Error", JOptionPane.WARNING_MESSAGE);
 	        email = null; // Invalida el email si el formato es incorrecto.
 	    }
 
-	    // Verifica que ninguno de los campos esté vacío. Si lo están, muestra una advertencia.
+	    /**
+	     * Verifica que ninguno de los campos esté vacío antes de continuar.
+	     * Si falta información, se muestra una advertencia y se detiene la ejecución.
+	     */
 	    if (usuario.isEmpty() || email.isEmpty() || pin.isEmpty()) { 
 	        JOptionPane.showMessageDialog(null, "⚠️ Todos los campos son obligatorios.");
 	        return; // Detiene la ejecución de la función si algún campo está vacío.
 	    }
 
-	    // Llama al método 'recuperarCredenciales' de la clase 'RecuperarContraseñaDAO' 
-	    // para verificar los datos en la base de datos y obtener un resultado.
+	    /**
+	     * Llama al método de la clase `RecuperarContraseñaDAO` que consulta la base de datos
+	     * para recuperar las credenciales del usuario basado en los datos proporcionados.
+	     */
 	    String resultado = RecuperarContraseñaDAO.recuperarCredenciales(usuario, email, pin); 
 
-	    // Muestra el resultado obtenido en un mensaje emergente (puede ser éxito o error).
-	    JOptionPane.showMessageDialog(null, resultado); 
+	    /**
+	     * Muestra el resultado obtenido en un cuadro de diálogo emergente,
+	     * indicando éxito o error en la recuperación de credenciales.
+	     */
+	    JOptionPane.showMessageDialog(null, resultado);
 	}}

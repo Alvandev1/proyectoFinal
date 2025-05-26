@@ -391,6 +391,12 @@ public class entrada extends JFrame {
 	}
 	
 	
+	/**
+	 * Elimina un usuario de la base de datos verificando primero que las credenciales sean correctas.
+	 *
+	 * @param usuario Nombre de usuario que se desea eliminar.
+	 * @param contraseña Contraseña del usuario para validar su identidad antes de la eliminación.
+	 */
 	public void eliminarUsuario(String usuario, String contraseña) {
 	    Connection conn = ConexionDB.conectar();
 	    if (conn == null) {
@@ -399,7 +405,7 @@ public class entrada extends JFrame {
 	    }
 
 	    try {
-	        // Verificar si el usuario y la contraseña coinciden
+	        // Verificar si el usuario y la contraseña coinciden en la base de datos.
 	        String sqlCheck = "SELECT * FROM usuarios WHERE username = ? AND password = ?";
 	        PreparedStatement stmtCheck = conn.prepareStatement(sqlCheck);
 	        stmtCheck.setString(1, usuario);
@@ -407,25 +413,31 @@ public class entrada extends JFrame {
 	        ResultSet rs = stmtCheck.executeQuery();
 
 	        if (rs.next()) {
-	            // Si coincide, eliminar el usuario
+	            // Si coincide, eliminar el usuario de la base de datos.
 	            String sqlDelete = "DELETE FROM usuarios WHERE username = ?";
 	            PreparedStatement stmtDelete = conn.prepareStatement(sqlDelete);
 	            stmtDelete.setString(1, usuario);
 	            stmtDelete.executeUpdate();
 
 	            JOptionPane.showMessageDialog(null, "✅ Usuario eliminado correctamente.");
-	            proyectito nuevoFrame = new proyectito(); // Instancia la nueva ventana
-	            nuevoFrame.setVisible(true); // La muestra en pantalla
-	            dispose();
+	            proyectito nuevoFrame = new proyectito(); // Instancia la nueva ventana.
+	            nuevoFrame.setVisible(true); // La muestra en pantalla.
+	            dispose(); // Cierra la ventana actual.
 	        } else {
 	            JOptionPane.showMessageDialog(null, "❌ Usuario o contraseña incorrectos.");
 	        }
 
-	        conn.close();
+	        conn.close(); // Cierra la conexión con la base de datos.
 	    } catch (Exception ex) {
 	        ex.printStackTrace();
 	    }
 	}
+
+	/**
+	 * Muestra la cantidad de usuarios registrados en la base de datos.
+	 * 
+	 * @param labelUsuarios JLabel donde se mostrará el número total de usuarios.
+	 */
 	public void mostrarCantidadUsuarios(JLabel labelUsuarios) {
 	    Connection conn = ConexionDB.conectar();
 	    if (conn == null) {
@@ -434,6 +446,7 @@ public class entrada extends JFrame {
 	    }
 
 	    try {
+	        // Consulta SQL para obtener el número total de usuarios registrados.
 	        String sql = "SELECT contar_usuarios() AS total";
 	        PreparedStatement stmt = conn.prepareStatement(sql);
 	        ResultSet rs = stmt.executeQuery();
@@ -445,9 +458,8 @@ public class entrada extends JFrame {
 	            labelUsuarios.setText("No hay usuarios registrados.");
 	        }
 
-	        conn.close();
+	        conn.close(); // Cierra la conexión con la base de datos.
 	    } catch (Exception ex) {
 	        ex.printStackTrace();
 	    }
-	}
-}
+	}}
