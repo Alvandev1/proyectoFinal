@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"proyecto","l":"ConexionDB"},{"p":"proyecto","l":"entrada"},{"p":"proyecto","l":"OlvidarContraseña"},{"p":"proyecto","l":"pago"},{"p":"proyecto","l":"PantallaCarga"},{"p":"proyecto","l":"proyectito"},{"p":"proyecto","l":"registrojuego"}];updateSearchResults();
